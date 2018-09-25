@@ -52,7 +52,6 @@ function next(bits)
 function nextInt(bound) 
 {
 	var r = next(31);
-	console.log("next 31: " + r);
 	var m = bound;
 	if ((bound & m) == 0)  // i.e., bound is a power of 2
 		r = ((bound * r) >> 31);
