@@ -45,7 +45,7 @@ function setSeed(s)
 	
 function next(bits)
 {
-	seed = bigInt((seed * 0x5DEECE66D + 0xB)).mod(Math.pow(2,48));
+	seed = (bigInt(seed).multiply(multiplier).add(addend)).and(mask);
 	return (bigInt(seed).shiftRight(48 - bits));
 }
 			
@@ -53,8 +53,9 @@ function nextInt(bound)
 {
 	var r = next(31);
 	var m = bound;
+	console.log(r);
 	if ((bound & m) == 0)  // i.e., bound is a power of 2
-		r = ((bound * r) >> 31);
+		r = ((bigInt(bound).multiply(r)).shiftRight(31));
 	else
 	{
 		for(u = r; u - (r = u % bound) + m < 0; u = next(31));
