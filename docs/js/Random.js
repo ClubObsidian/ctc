@@ -53,7 +53,6 @@ function nextInt(bound)
 {
 	var r = next(31);
 	var m = bound;
-	console.log(r);
 	if ((bound & m) == 0)  // i.e., bound is a power of 2
 		r = ((bigInt(bound).multiply(r)).shiftRight(31));
 	else

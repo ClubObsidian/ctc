@@ -2,15 +2,48 @@
 	<head>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/big-integer/1.6.36/BigInteger.min.js"></script>
 		<script src="js/Random.js"></script>
+		
+		<link rel="stylesheet" href="css/style.css">
 		<script>
-			//Port of openjdk-8
+			const MAX_VALUE = 2147483647;
 			
-			setSeed(2467);
-			console.log("seed: " + seed);
-			console.log("next: " + nextInt(2147483647));
+			function generate()
+			{
+				var seed = document.getElementById("seed").value;
+				if(seed == null || seed == "")
+					return;
+				
+				if(isNaN(seed))
+				{
+					var count = 0;
+					for(var i = 0; i < seed.length; i++)
+					{
+						count+= seed.charCodeAt(i);
+					}
+					seed = count;
+				}
+				setSeed(seed);
+				return nextInt(MAX_VALUE);
+			}
+			
+			function updateRandNumber()
+			{
+				var randNum = generate();
+				document.getElementById("random-number").innerHTML = "<p>" + randNum + " </p>"
+			}
 			
 		</script>
 	</head>
-
+	<body>
+		</br> <!-- Remove this later -->
+		Seed: <input type="text" id="seed">
+		</br>
+		</br>
+		<input type="submit" onclick="updateRandNumber()" value="Verify"></input>
+		<div id="random-number"> </div>
+	</body>
+	<footer>
+	
+	</footer>
 
 </html>
