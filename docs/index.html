@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<script src="http://peterolson.github.com/BigInteger.js/BigInteger.min.js"></script>
+		<script src="js/Random.js"></script>
+		<script>
+			//Port of openjdk-8
+			
+			let rand = new Random(2467);
+			console.log(rand.nextInt(2147483647));
+			
+			const mask = bigInt(281474976710655);
+			const multiplier = bigInt(25214903917);
+			const addend = 11;
+			
+			function initialScramble(seed) 
+			{
+				return (bigInt(seed).xor(multiplier)).and(mask);
+			}
+			
+			var seed = initialScramble(2467);
+			console.log("initialscramble: " + seed);
+			
+			function next(bits)
+			{
+				seed = bigInt((seed * 0x5DEECE66D + 0xB)).mod(Math.pow(2,48));
+				return (bigInt(seed).shiftRight(48 - bits));
+			}
+			
+			function nextInt(bound) 
+			{
+				var r = next(31);
+				console.log("next 31: " + r);
+				var m = bound;
+				if ((bound & m) == 0)  // i.e., bound is a power of 2
+					r = ((bound * r) >> 31);
+				else
+				{
+					for(u = r; u - (r = u % bound) + m < 0; u = next(31));
+				}
+				return r;
+			}
+			
+			//console.log(nextInt(2147483647));
+		</script>
+	</head>
+
+
+</html>
