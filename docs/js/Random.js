@@ -33,33 +33,33 @@ function Random(seed)
 	const addend = 11;
 	
 	this.initialScramble = function(seed) 
-    {
-        return (bigInt(seed).xor(multiplier)).and(mask);
-    }
+	{
+		return (bigInt(seed).xor(multiplier)).and(mask);
+	}
 
     this.setSeed = function(s)
     {
-        this.seed = this.initialScramble(s);
+		this.seed = this.initialScramble(s);
     }
 	
 	this.next = function(bits)
-    {
-        this.seed = (bigInt(this.seed).multiply(multiplier).add(addend)).and(mask);
-        return (bigInt(this.seed).shiftRight(48 - bits));
-    }
+	{
+		this.seed = (bigInt(this.seed).multiply(multiplier).add(addend)).and(mask);
+		return (bigInt(this.seed).shiftRight(48 - bits));
+	}
     
     this.nextInt = function(bound) 
     {
-        var r = this.next(31);
-        var m = bound;
-        if ((bound & m) == 0)  // i.e., bound is a power of 2
-            r = ((bigInt(bound).multiply(r)).shiftRight(31));
-        else
-        {
-            for(var u = r; u - (r = u % bound) + m < 0; u = this.next(31));
-        }
-        return r;
-    }
+		var r = this.next(31);
+		var m = bound;
+		if ((bound & m) == 0)  // i.e., bound is a power of 2
+			r = ((bigInt(bound).multiply(r)).shiftRight(31));
+		else
+		{
+			for(var u = r; u - (r = u % bound) + m < 0; u = this.next(31));
+		}
+		return r;
+	}
 	
 	this.seed = this.initialScramble(seed);
 	//Cannot use setSeed due to initialization
