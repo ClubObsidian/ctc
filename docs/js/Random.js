@@ -26,38 +26,68 @@
 //Modified version of java.util.Random ported to javascript uses BigInteger library
 //https://github.com/peterolson/BigInteger.js
 
+class Random {
+    constructor() {
+        this._mask = bigInt(281474976710655);
+        this._multiplier = bigInt(25214903917);
+        this._addend = 11;
+        this.seed = NaN;
+    }
 
-const mask = bigInt(281474976710655);
-const multiplier = bigInt(25214903917);
-const addend = 11;
-
-var seed = NaN;
-
-function initialScramble(seed) 
-{
-	return (bigInt(seed).xor(multiplier)).and(mask);
-}
-
-function setSeed(s)
-{
-	seed = initialScramble(s);
-}
-	
-function next(bits)
-{
-	seed = (bigInt(seed).multiply(multiplier).add(addend)).and(mask);
-	return (bigInt(seed).shiftRight(48 - bits));
-}
-			
-function nextInt(bound) 
-{
-	var r = next(31);
-	var m = bound;
-	if ((bound & m) == 0)  // i.e., bound is a power of 2
-		r = ((bigInt(bound).multiply(r)).shiftRight(31));
-	else
-	{
-		for(u = r; u - (r = u % bound) + m < 0; u = next(31));
+    get mask()
+    {
+        return this._mask;
 	}
-	return r;
+
+    get multiplier()
+    {
+        return this._multiplier;
+    }
+    get addend()
+    {
+        return this._addend;
+	}
+
+    set mask(arg)
+    {
+        throw new Error('mask is immutable.');
+	}
+
+    set multiplier(arg)
+    {
+        throw new Error('multiplier is immutable.');
+    }
+    set addend(arg)
+    {
+        throw new Error('addend is immutable.');
+	}
+
+    initialScramble(seed) 
+    {
+        return (bigInt(seed).xor(this.multiplier)).and(this.mask);
+    }
+
+    setSeed(s)
+    {
+        this.seed = this.initialScramble(s);
+    }
+        
+    next(bits)
+    {
+        this.seed = (bigInt(this.seed).multiply(this.multiplier).add(this.addend)).and(this.mask);
+        return (bigInt(this.seed).shiftRight(48 - bits));
+    }
+                
+    nextInt(bound) 
+    {
+        var r = this.next(31);
+        var m = bound;
+        if ((bound & m) == 0)  // i.e., bound is a power of 2
+            r = ((bigInt(bound).multiply(r)).shiftRight(31));
+        else
+        {
+            for(var u = r; u - (r = u % bound) + m < 0; u = this.next(31));
+        }
+        return r;
+    }
 }

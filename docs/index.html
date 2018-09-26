@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="utf-8"/>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/big-integer/1.6.36/BigInteger.min.js"></script>
 		<script src="js/Random.js"></script>
 		
@@ -27,6 +28,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 		<script>
 			const MAX_VALUE = 2147483647;
 			
+			const rng = new Random();
+
 			function generate()
 			{
 				var seed = document.getElementById("seed").value;
@@ -43,8 +46,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 					}
 					seed = count;
 				}
-				setSeed(seed);
-				return nextInt(MAX_VALUE);
+				rng.setSeed(seed);
+				return rng.nextInt(MAX_VALUE);
 			}
 			
 			function updateRandNumber()
