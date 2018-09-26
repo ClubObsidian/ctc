@@ -28,10 +28,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 		<script>
 			const MAX_VALUE = 2147483647;
 			
-			const rng = new Random();
-
 			function generate()
 			{
+				
 				var seed = document.getElementById("seed").value;
 				if(seed == null || seed == "")
 					return;
@@ -46,8 +45,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 					}
 					seed = count;
 				}
-				rng.setSeed(seed);
-				return rng.nextInt(MAX_VALUE);
+				var rand = new Random(seed);
+				return rand.nextInt(MAX_VALUE);
 			}
 			
 			function updateRandNumber()

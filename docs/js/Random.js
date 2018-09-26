@@ -25,60 +25,30 @@
  
 //Modified version of java.util.Random ported to javascript uses BigInteger library
 //https://github.com/peterolson/BigInteger.js
-
-class Random {
-    constructor() {
-        this._mask = bigInt(281474976710655);
-        this._multiplier = bigInt(25214903917);
-        this._addend = 11;
-        this.seed = NaN;
+	
+function Random(seed) 
+{
+	const mask = bigInt(281474976710655);
+	const multiplier = bigInt(25214903917);
+	const addend = 11;
+	
+	this.initialScramble = function(seed) 
+    {
+        return (bigInt(seed).xor(multiplier)).and(mask);
     }
 
-    get mask()
-    {
-        return this._mask;
-	}
-
-    get multiplier()
-    {
-        return this._multiplier;
-    }
-    get addend()
-    {
-        return this._addend;
-	}
-
-    set mask(arg)
-    {
-        throw new Error('mask is immutable.');
-	}
-
-    set multiplier(arg)
-    {
-        throw new Error('multiplier is immutable.');
-    }
-    set addend(arg)
-    {
-        throw new Error('addend is immutable.');
-	}
-
-    initialScramble(seed) 
-    {
-        return (bigInt(seed).xor(this.multiplier)).and(this.mask);
-    }
-
-    setSeed(s)
+    this.setSeed = function(s)
     {
         this.seed = this.initialScramble(s);
     }
-        
-    next(bits)
+	
+	this.next = function(bits)
     {
-        this.seed = (bigInt(this.seed).multiply(this.multiplier).add(this.addend)).and(this.mask);
+        this.seed = (bigInt(this.seed).multiply(multiplier).add(addend)).and(mask);
         return (bigInt(this.seed).shiftRight(48 - bits));
     }
-                
-    nextInt(bound) 
+    
+    this.nextInt = function(bound) 
     {
         var r = this.next(31);
         var m = bound;
@@ -90,4 +60,7 @@ class Random {
         }
         return r;
     }
+	
+	this.seed = this.initialScramble(seed);
+	//Cannot use setSeed due to initialization
 }
