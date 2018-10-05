@@ -37,10 +37,10 @@ function Random(seed)
 		return (bigInt(seed).xor(multiplier)).and(mask);
 	}
 
-    this.setSeed = function(s)
-    {
+	this.setSeed = function(s)
+	{
 		this.seed = this.initialScramble(s);
-    }
+	}
 	
 	this.next = function(bits)
 	{
@@ -48,8 +48,8 @@ function Random(seed)
 		return (bigInt(this.seed).shiftRight(48 - bits));
 	}
     
-    this.nextInt = function(bound) 
-    {
+	this.nextInt = function(bound) 
+	{
 		var r = this.next(31);
 		var m = bound;
 		if ((bound & m) == 0)  // i.e., bound is a power of 2
