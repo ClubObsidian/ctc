@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/openpgp/4.2.2/compat/openpgp.js" integrity="sha256-3/KBAIwNwhXKtzEHRty5tiPaeUI6CxbbWn9B4G7wOZI=" crossorigin="anonymous"></script>
+		<script>
+			function generateKey()
+			{
+				var password = document.getElementById("pgp-password").value;
+				var pgpKeyOutArea = document.getElementById("pgp-key-out");
+				var options = {
+					userIds: [{name: 'John Doe'}],
+					numBits: 4096,
+					passphrase: password
+				};
+				
+				var key = openpgp.generateKey(options).then(function(key) {
+					pgpKeyOutArea.value = key.privateKeyArmored;
+				});
+			}
+		</script>
+	</head>
+	<body>
+		Passphrase
+		</br>
+		<input type="text" id="pgp-password">
+		</br>
+		</br>
+		Key out
+		</br>
+		<textarea rows="10" cols="50" id="pgp-key-out"></textarea>
+		</br>
+		</br>
+		<input type="submit" onclick="generateKey()" value="Generate"></input>
+	</body>
+</html>
