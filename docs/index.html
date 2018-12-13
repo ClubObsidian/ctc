@@ -57,13 +57,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 				document.getElementById("random-number").innerHTML = "<p>" + randNum + "</p>"
 			}
 			
+			function performPGPDecryption()
+			{
+				var password = document.getElementById("pgp-password").value;
+				var encryptedText = document.getElementById("pgp-encrypted-area").value;
+				var pgpOutArea = document.getElementById("pgp-out-area");
+				var options = {
+					numBits: 4096,
+					passphrase: password
+				};
+				
+				var key = openpgp.generateKey(options);
+				pgpOutArea.value = key.decrypt(encryptedText);
+			}
 		</script>
 	</head>
 	<body>
 		<h1>Crack the Clue Tools</h1>
 		
 		<div id="random-number-generator">
-			<h2>Random number generator</h2>
+			<h2>Random Number Generator</h2>
 			Seed: <input type="text" id="seed">
 			</br>
 			</br>
@@ -71,7 +84,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 			<div id="random-number"><p></br></p></div>
 		</div>
 		<div id="pgp">
-			
+			<h2>PGP Key Generator</h2>
+			Passphrase
+			</br>
+			<input type="text" id="pgp-password">
+			</br>
+			</br>
+			Encrypted text
+			</br>
+			<textarea rows="10" cols="50" id="pgp-encrypted-area"></textarea>
+			</br>
+			</br>
+			Out text
+			</br>
+			<textarea rows="10" cols="50" id="pgp-out-area"></textarea>
+			</br>
+			</br>
+			<input type="submit" onclick="performPGPDecryption()" value="Decrypt"></input>
 		</div>
 	</body>
 	<footer>
