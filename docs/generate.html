@@ -1,20 +1,13 @@
 <html>
 	<head>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/openpgp/4.2.2/compat/openpgp.js" integrity="sha256-3/KBAIwNwhXKtzEHRty5tiPaeUI6CxbbWn9B4G7wOZI=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/sjcl/1.0.8/sjcl.js" integrity="sha256-0JqGiPN8dEK7HmaZtG77GR2Sge8FpJJYb6D1TcTlEQo=" crossorigin="anonymous"></script>
 		<script>
-			function generateKey()
+			function encryptText()
 			{
 				var password = document.getElementById("pgp-password").value;
-				var pgpKeyOutArea = document.getElementById("pgp-key-out");
-				var options = {
-					userIds: [{name: 'John Doe'}],
-					numBits: 4096,
-					passphrase: password
-				};
-				
-				var key = openpgp.generateKey(options).then(function(key) {
-					pgpKeyOutArea.value = key.privateKeyArmored;
-				});
+				var plainText = document.getElementById("text-in").value;
+				var textOut = document.getElementById("text-out");
+				textOut.value = sjcl.encrypt(password, plainText);
 			}
 		</script>
 	</head>
@@ -24,11 +17,16 @@
 		<input type="text" id="pgp-password">
 		</br>
 		</br>
-		Key out
+		Text in
 		</br>
-		<textarea rows="10" cols="50" id="pgp-key-out"></textarea>
+		<textarea rows="10" cols="50" id="text-in"></textarea>
 		</br>
 		</br>
-		<input type="submit" onclick="generateKey()" value="Generate"></input>
+		Text out
+		</br>
+		<textarea rows="10" cols="50" id="text-out"></textarea>
+		</br>
+		</br>
+		<input type="submit" onclick="encryptText()" value="Generate"></input>
 	</body>
 </html>

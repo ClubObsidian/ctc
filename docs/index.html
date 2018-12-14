@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 	<head>
 		<meta charset="utf-8"/>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/big-integer/1.6.40/BigInteger.js" integrity="sha256-mCAAvW36JEVTN0k3iy8Kkw1UX2AIwgH+2XL/nJPUqkU=" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/openpgp/4.2.2/compat/openpgp.js" integrity="sha256-3/KBAIwNwhXKtzEHRty5tiPaeUI6CxbbWn9B4G7wOZI=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/sjcl/1.0.8/sjcl.js" integrity="sha256-0JqGiPN8dEK7HmaZtG77GR2Sge8FpJJYb6D1TcTlEQo=" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/gh/virustotalop/random.js/Random.js"></script>
 		
 		
@@ -57,18 +57,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 				document.getElementById("random-number").innerHTML = "<p>" + randNum + "</p>"
 			}
 			
-			function performPGPDecryption()
+			function performDecryption()
 			{
-				var password = document.getElementById("pgp-password").value;
-				var encryptedText = document.getElementById("pgp-encrypted-area").value;
-				var pgpOutArea = document.getElementById("pgp-out-area");
-				var options = {
-					numBits: 4096,
-					passphrase: password
-				};
+				var password = document.getElementById("encryption-password").value;
+				var encryptedText = document.getElementById("encrypted-area").value;
+				var textOut = document.getElementById("out-area");
 				
-				var key = openpgp.generateKey(options);
-				pgpOutArea.value = key.decrypt(encryptedText);
+				try
+				{
+					textOut.value = sjcl.decrypt(password, encryptedText);
+				}
+				catch(e)
+				{
+					textOut.value = "Invalid password";
+				}
 			}
 		</script>
 	</head>
@@ -84,23 +86,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 			<div id="random-number"><p></br></p></div>
 		</div>
 		<div id="pgp">
-			<h2>PGP Key Generator</h2>
+			<h2>Text decryption</h2>
 			Passphrase
 			</br>
-			<input type="text" id="pgp-password">
+			<input type="text" id="encryption-password">
 			</br>
 			</br>
 			Encrypted text
 			</br>
-			<textarea rows="10" cols="50" id="pgp-encrypted-area"></textarea>
+			<textarea rows="10" cols="50" id="encrypted-area"></textarea>
 			</br>
 			</br>
 			Out text
 			</br>
-			<textarea rows="10" cols="50" id="pgp-out-area"></textarea>
+			<textarea rows="10" cols="50" id="out-area"></textarea>
 			</br>
 			</br>
-			<input type="submit" onclick="performPGPDecryption()" value="Decrypt"></input>
+			<input type="submit" onclick="performDecryption()" value="Decrypt"></input>
 		</div>
 	</body>
 	<footer>
